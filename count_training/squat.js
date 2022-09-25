@@ -96,6 +96,7 @@ function draw() {
         stroke(30);
         textSize(30);
         textAlign(LEFT);
+        textStyle(BOLD);
         text(count + "回目", 1, 20);
     } else {
         setup_finish_flag = false;
@@ -131,7 +132,7 @@ function drawKeypoints() {
                 stroke(30);
                 ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
                 //鼻を中心に顔を隠す
-                fill(255, 0, 0);
+                fill(255, 255, 255);
                 ellipse(pose.nose.x, pose.nose.y, 200);
             }
         }
@@ -388,7 +389,7 @@ function counter(angle1, angle2) {
         stroke(30);
         textSize(50);
         textAlign(CENTER, CENTER);
-        text("ひざ が あさいよ", 320, 240);
+        text("ひざ が あさいよ", width / 2, height / 2);
     }
         setTimeout(() =>{ //目標達成後の画面遷移フラグ(5秒後)
             // console.log("Execution 5sec");
