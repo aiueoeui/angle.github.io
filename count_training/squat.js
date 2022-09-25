@@ -40,9 +40,15 @@ const LEFTANKLE = 15;
 const RIGHTANKLE = 16;
 
 function setup() {
-    createCanvas(640, 480);
+
+    if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
+        createCanvas(screen.width, screen.height);//スマホ処理
+    }else {
+        createCanvas(760, 540);//PC処理
+    }
     video = createCapture(VIDEO);
     video.size(width, height);
+    console.log(width,height);
 
     // Create a new poseNet method with a single detection
     poseNet = ml5.poseNet(video, "single", modelReady);
@@ -341,7 +347,7 @@ function Kneeangledraw(flexiontext1,flexiontext2) {
 function counter(angle1, angle2) {
     // setTimeout(() => { //準備完了までカウント無効(とりあえず10秒設定)
     //     console.log("setup");
-    console.log(setup_finish_flag);
+    // console.log(setup_finish_flag);
 
             usercount = document.form.count.value; //htmlから目標回数を取得
             // console.log(usercount);
