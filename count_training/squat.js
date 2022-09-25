@@ -42,13 +42,15 @@ const RIGHTANKLE = 16;
 function setup() {
 
     if (window.matchMedia('(max-width: 767px)').matches) {
-        createCanvas(screen.width, screen.height);//スマホ処理
+        createCanvas(540, 760);//スマホ処理
+        console.log("スマホ");
     } else if (window.matchMedia('(min-width:768px)').matches){
         createCanvas(760, 540);//PC処理
+        console.log("PC");
     }
     video = createCapture(VIDEO);
     video.size(width, height);
-    console.log(width,height);
+    // console.log(width,height);
 
     // Create a new poseNet method with a single detection
     poseNet = ml5.poseNet(video, "single", modelReady);
