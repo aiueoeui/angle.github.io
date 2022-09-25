@@ -41,9 +41,9 @@ const RIGHTANKLE = 16;
 
 function setup() {
 
-    if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
+    if (window.matchMedia('(max-width: 767px)').matches) {
         createCanvas(screen.width, screen.height);//スマホ処理
-    }else {
+    } else if (window.matchMedia('(min-width:768px)').matches){
         createCanvas(760, 540);//PC処理
     }
     video = createCapture(VIDEO);
