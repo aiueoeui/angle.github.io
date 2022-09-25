@@ -39,15 +39,25 @@ const RIGHTKNEE = 14;
 const LEFTANKLE = 15;
 const RIGHTANKLE = 16;
 
-function setup() {
-
+function switchByWidth(){
+    //レスポンシブ対応
     if (window.matchMedia('(max-width: 767px)').matches) {
         createCanvas(540, 760);//スマホ処理
         console.log("スマホ");
-    } else if (window.matchMedia('(min-width:768px)').matches){
+    } else if (window.matchMedia('(min-width:768px)').matches) {
         createCanvas(760, 540);//PC処理
         console.log("PC");
     }
+}
+
+function setup() {
+
+    switchByWidth();
+
+    //ロードとリサイズの両方で同じ処理を付与する
+    window.onload = switchByWidth;
+    window.onresize = switchByWidth;
+
     video = createCapture(VIDEO);
     video.size(width, height);
     // console.log(width,height);
