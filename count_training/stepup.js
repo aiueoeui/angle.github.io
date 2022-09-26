@@ -15,8 +15,12 @@ let tRHA;
 let tLHA;
 let rcheck = 0;
 let lcheck = 0;
-let timer = 10;
+
+let timer = 0;
 let Notes = "体全体を映してください";
+let statusmode = "読み込み中";
+
+let setup_finish_flag = false;
 
 const NOSE = 0;
 const LEFTEYE = 1;
@@ -39,7 +43,7 @@ const RIGHTANKLE = 16;
 function switchByWidth() {
     //レスポンシブ対応
     if (window.matchMedia('(max-width: 767px)').matches) {
-        createCanvas(540, 760);//スマホ処理
+        createCanvas(370, 760);//スマホ処理
         console.log("スマホ");
     } else if (window.matchMedia('(min-width:768px)').matches) {
         createCanvas(760, 540);//PC処理
@@ -49,6 +53,10 @@ function switchByWidth() {
 
 function setup() {
     switchByWidth();
+
+    //ロードとリサイズの両方で同じ処理を付与する
+    window.onload = switchByWidth;
+    window.onresize = switchByWidth;
 
     video = createCapture(VIDEO);
     video.size(width, height);
@@ -156,23 +164,60 @@ function drawSkeleton() {
 }
 
 function starttimer(){ //推定開始までのカウントダウン
-    fill(255, 0, 0);
-    stroke(30);
-    textSize(50);
-    textAlign(CENTER, CENTER);
-    text(Notes, width / 2, height / 2.5);
-    text(timer, width/2, height/2);
-    if (frameCount % 60 ==0 && timer > 0) {
-        timer --;
+    if (window.matchMedia('(max-width: 767px)').matches) {
+        //スマホ
+        fill(255, 0, 0);
+        stroke(30);
+        textSize(30);
+        textAlign(CENTER, CENTER);
+        text(Notes, width / 2, height / 2);
+    } else if (window.matchMedia('(min-width:768px)').matches) {
+        //PC
+        fill(255, 0, 0);
+        stroke(30);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+        text(Notes, width / 2, height / 2);
     }
-    if (timer == 0) {
-        Notes = " ";
-        timer = " ";
+
+
+    fill(255, 255, 255);
+    stroke(30);
+    textSize(30);
+    textAlign(RIGHT, RIGHT);
+    text(statusmode + timer, width, 20);
+
+    if (setup_finish_flag == true) {
         fill(255, 255, 255);
         stroke(30);
         textSize(30);
         textAlign(RIGHT, RIGHT);
         text("推定中", width, 20);
+    }
+
+    for (let i = 0; i < poses.length; i += 1) {
+        const pose = poses[i].pose;
+        for (let j = 0; j < pose.keypoints.length; j += 1) {
+            if (pose.score > 0.8) {
+                if (frameCount % 60 == 0 && timer < 100) {
+                    timer += 1;
+                } else if (timer > 100) {
+                    break;
+                }
+            }
+            if (pose.score < 0.8) {
+                if (frameCount % 60 == 0 && timer > 0) {
+                    timer--;
+                }
+            }
+        }
+    }
+
+    if (timer >= 100) {
+        Notes = " ";
+        timer = " ";
+        statusmode = " ";
+        setup_finish_flag = true;
     }
 } 
 

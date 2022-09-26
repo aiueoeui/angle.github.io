@@ -64,7 +64,7 @@ function setup() {
 
     // Create a new poseNet method with a single detection
     poseNet = ml5.poseNet(video, "single", modelReady);
-    
+
     console.log(poseNet);
     // This sets up an event that fills the global variable "poses"
     // with an array every time new poses are detected
