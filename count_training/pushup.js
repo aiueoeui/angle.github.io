@@ -45,7 +45,7 @@ const RIGHTANKLE = 16;
 function switchByWidth() {
     //レスポンシブ対応
     if (window.matchMedia('(max-width: 767px)').matches) {
-        createCanvas(370, 700);//スマホ処理
+        createCanvas(400, 700);//スマホ処理
         console.log("スマホ");
     } else if (window.matchMedia('(min-width:768px)').matches) {
         createCanvas(760, 540);//PC処理
@@ -359,7 +359,7 @@ function counter(angle1, angle2) {
     usercount = document.form.count.value; //htmlから目標回数を取得
     // console.log(usercount);
     if (setup_finish_flag == true) {
-        if ((angle1 <= 120 && angle1 >= 80 && flag == false) && (angle2 <= 120 && angle2 >= 80 && flag == false)) {
+        if ((angle1 <= 100 && angle1 >= 80 && flag == false) && (angle2 <= 100 && angle2 >= 80 && flag == false)) {
             flag = true;
         } else if ((angle1 >= 160 && flag == true) || (angle2 >= 150 && flag == true)) {
             count += 1; //体制を戻した時にカウント
