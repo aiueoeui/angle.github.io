@@ -42,7 +42,7 @@ const RIGHTANKLE = 16;
 function switchByWidth() {
     //レスポンシブ対応
     if (window.matchMedia('(max-width: 767px)').matches) {
-        createCanvas(370, 760);//スマホ処理
+        createCanvas(370, 700);//スマホ処理
         console.log("スマホ");
     } else if (window.matchMedia('(min-width:768px)').matches) {
         createCanvas(760, 540);//PC処理
@@ -59,8 +59,10 @@ function setup() {
     window.onresize = switchByWidth;
 
     video = createCapture(VIDEO);
-    video.size(width, height);
+    video.size(width - 10, height -10);
     // console.log(width,height);
+
+    rect(width / 2, height / 2, 370, 700);
 
     rectMode(CENTER);
 
