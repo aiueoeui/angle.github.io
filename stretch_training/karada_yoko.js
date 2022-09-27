@@ -9,17 +9,18 @@ let minflag = false;
 let NGflag = false;
 let nextpage = false;
 let stratup = false;
+let timerflag = false;
 let flexiontext1;
 let flexiontext2;
 
 let rcheck = 0;
 let lcheck = 0;
 
-let timer = 0;
+let timer = 100;
 let Notes = "体全体を映してください";
 let statusmode = "読み込み中";
 
-let setup_finish_flag = false;
+let setup_finish_flag = true;
 
 const NOSE = 0;
 const LEFTEYE = 1;
@@ -89,8 +90,6 @@ function draw() {
     Elbowangledraw();
 
     starsetup();
-
-    counter();
 
     //ifカウント以上で色変更
     if (count < usercount) {
@@ -226,21 +225,21 @@ function Elbowangledraw(flexiontext1, flexiontext2) {
             // A keypoint is an object describing a body part (like rightArm or leftShoulder)
             const keypoint = pose.keypoints[j];
             // Only draw an ellipse is the pose probability is bigger than 0.2
-            if (pose.keypoints[RIGHTELBOW].score > 0.6 && pose.keypoints[RIGHTWRIST].score > 0.6 && pose.keypoints[RIGHTSHOULDER].score > 0.6) {
+            if (pose.keypoints[RIGHTSHOULDER].score > 0.5 && pose.keypoints[RIGHTELBOW].score > 0.5 && pose.keypoints[RIGHTHIP].score > 0.5) {
                 //右
 
                 const P1 = {
-                    x: pose.keypoints[RIGHTELBOW].position.x,
-                    y: pose.keypoints[RIGHTELBOW].position.y,
+                    x: pose.keypoints[RIGHTSHOULDER].position.x,
+                    y: pose.keypoints[RIGHTSHOULDER].position.y,
 
                 };
                 const P2 = {
-                    x: pose.keypoints[RIGHTWRIST].position.x,
-                    y: pose.keypoints[RIGHTWRIST].position.y,
+                    x: pose.keypoints[RIGHTELBOW].position.x,
+                    y: pose.keypoints[RIGHTELBOW].position.y,
                 };
                 const P3 = {
-                    x: pose.keypoints[RIGHTSHOULDER].position.x,
-                    y: pose.keypoints[RIGHTSHOULDER].position.y,
+                    x: pose.keypoints[RIGHTHIP].position.x,
+                    y: pose.keypoints[RIGHTHIP].position.y,
                 };
 
                 //3点座標から角度を計算
@@ -273,22 +272,22 @@ function Elbowangledraw(flexiontext1, flexiontext2) {
                 stroke(30);
                 textSize(30);
                 textFont('sans-serif');
-                text(flexiontext1 + "°", pose.keypoints[RIGHTELBOW].position.x, pose.keypoints[RIGHTELBOW].position.y);
+                text(flexiontext1 + "°", pose.keypoints[RIGHTSHOULDER].position.x, pose.keypoints[RIGHTSHOULDER].position.y);
             }
-            if (pose.keypoints[LEFTELBOW].score > 0.6 && pose.keypoints[LEFTWRIST].score > 0.6 && pose.keypoints[LEFTSHOULDER].score > 0.6) {
+            if (pose.keypoints[LEFTSHOULDER].score > 0.6 && pose.keypoints[LEFTELBOW].score > 0.6 && pose.keypoints[LEFTHIP].score > 0.6) {
                 //左
 
                 const O1 = {
+                    x: pose.keypoints[LEFTSHOULDER].position.x,
+                    y: pose.keypoints[LEFTSHOULDER].position.y,
+                };
+                const O2 = {
                     x: pose.keypoints[LEFTELBOW].position.x,
                     y: pose.keypoints[LEFTELBOW].position.y,
                 };
-                const O2 = {
-                    x: pose.keypoints[LEFTWRIST].position.x,
-                    y: pose.keypoints[LEFTWRIST].position.y,
-                };
                 const O3 = {
-                    x: pose.keypoints[LEFTSHOULDER].position.x,
-                    y: pose.keypoints[LEFTSHOULDER].position.y,
+                    x: pose.keypoints[LEFTHIP].position.x,
+                    y: pose.keypoints[LEFTHIP].position.y,
                 };
 
                 //3点座標から角度を計算
@@ -321,7 +320,7 @@ function Elbowangledraw(flexiontext1, flexiontext2) {
                 stroke(30);
                 textSize(30);
                 textFont('sans-serif');
-                text(flexiontext2 + "°", pose.keypoints[LEFTELBOW].position.x, pose.keypoints[LEFTELBOW].position.y);
+                text(flexiontext2 + "°", pose.keypoints[LEFTSHOULDER].position.x, pose.keypoints[LEFTSHOULDER].position.y);
 
             }
             counter(flexiontext1, flexiontext2);
@@ -334,33 +333,15 @@ function counter(angle1, angle2) {
 
     usercount = document.form.count.value; //htmlから目標回数を取得
     // console.log(usercount);
-    if (angle1 > 170 && angle2 > 170) {
-        stratup = true;
-    }
-    if (stratup == true && setup_finish_flag == true) {
-        if ((angle1 <= 90 && flag == false) && (angle2 <= 90 && flag == false)) {
-            flag = true;
-            minflag = false;
-            NGflag = false;
-        } else if ((angle1 >= 170 && flag == true) || (angle2 >= 170 && flag == true)) {
-            count += 1; //体制を戻した時にカウント
-            flag = false;
+    if (setup_finish_flag == true) {
+        if ((angle1 > 100 && flag == false) && (angle2 > 100 && flag == false)) {
+            timerflag = true;
+        } else {
+            timerflag = false;
         }
-        // } else if ((angle1 < 120 && angle1 > 90 && flag == false && minflag == false) || (angle2 < 120 && angle2 > 90 && flag == false && minflag == false)) {
-        //     minflag = true;
-        // } else if ((angle1 > 170 && flag == false && minflag == true) || (angle2 > 170 && flag == false && minflag == true)) {
-        //     NGflag = true //膝関節角度が90°未満に達していない状態で上体を起こすと警告を表示
-        // }
+
     }
 
-
-    if (NGflag == true) {
-        fill(255, 0, 0);
-        stroke(30);
-        textSize(50);
-        textAlign(CENTER, CENTER);
-        text("ひざ が あさいよ", 320, 240);
-    }
     setTimeout(() => { //目標達成後の画面遷移フラグ(5秒後)
         // console.log("Execution 5sec");
         // console.log(nextpage);
@@ -368,3 +349,10 @@ function counter(angle1, angle2) {
         // location.href = "result.html";
     }, 5000);
 }
+
+//近似値の場合にカウント増加
+setInterval(function() {
+    if(timerflag == true) { 
+            count += 1;
+        }
+    }, 1000);

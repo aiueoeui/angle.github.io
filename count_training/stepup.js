@@ -439,36 +439,36 @@ function counter(angle1, angle2, angle3, angle4) {
     // console.log("右腰"+angle3);
     // console.log("左腰" + angle4);
 
-    // if (angle1 < 95 && angle3 > 110 && rflag == false) { 
-    //     //右側のフラグここから
-    //     rflag = true;
-    //     rcheck +=1;
-    // } else if (angle1 > 165 && angle3 > 165 && rflag == true) {
-    //     if (lflag = true) {
-    //         count += 1; //r,lfagともにtrueならカウント+1
-    //         lflag = false;
-    //         rflag = false; 
-    //         rcheck = 0;
-    //     }
-    //     //右側フラグここまで
-    // } else if (angle2 < 95 && angle4 > 105 && lflag == false) {
-    //     lflag = true;
-    //     lcheck +=1;
-    // } else if (angle2 > 165 && angle4 > 165 && lflag == true) {
-    //     if (rflag = true) {
-    //         count += 1; //r,lfagともにtrueならカウント+1
-    //         lflag = false;
-    //         rflag = false;
-    //         lcheck = 0;
-    //     }
-    // }
-
-    if ((angle1 < 95 && angle3 > 110 && rflag == false) || (angle2 < 95 && angle4 > 105 && rflag == false)){
+    if (angle1 < 95 && angle3 > 110 && rflag == false) { 
+        //右側のフラグここから
         rflag = true;
-    } else if ((angle1 > 165 && angle3 > 165 && rflag == true) || (angle2 > 165 && angle4 > 165 && lflag == true)){
-        count += 1;
-        rflag = false;
+        rcheck +=1;
+    } else if (angle1 > 165 && angle3 > 165 && rflag == true) {
+        if (lflag = true) {
+            count += 1; //r,lfagともにtrueならカウント+1
+            lflag = false;
+            rflag = false; 
+            rcheck = 0;
+        }
+        //右側フラグここまで
+    } else if (angle2 < 95 && angle4 > 105 && lflag == false) {
+        lflag = true;
+        lcheck +=1;
+    } else if (angle2 > 165 && angle4 > 165 && lflag == true) {
+        if (rflag = true) {
+            count += 1; //r,lfagともにtrueならカウント+1
+            lflag = false;
+            rflag = false;
+            lcheck = 0;
+        }
     }
+
+    // if ((angle1 < 95 && angle3 > 110 && rflag == false) || (angle2 < 95 && angle4 > 105 && rflag == false)){
+    //     rflag = true;
+    // } else if ((angle1 > 165 && angle3 > 165 && rflag == true) || (angle2 > 165 && angle4 > 165 && lflag == true)){
+    //     count += 1;
+    //     rflag = false;
+    // }
 
         setTimeout(() => { //目標達成後の画面遷移フラグ(5秒後)
             // console.log("Execution 5sec");

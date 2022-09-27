@@ -135,7 +135,7 @@ function drawKeypoints() {
                 ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
                 //鼻を中心に顔を隠す
                 fill(255, 255, 255);
-                ellipse(pose.nose.x, pose.nose.y, 200);
+                ellipse(pose.nose.x, pose.nose.y, 300);
             }
         }
     }
@@ -334,14 +334,9 @@ function counter(angle1, angle2) {
 
     usercount = document.form.count.value; //htmlから目標回数を取得
     // console.log(usercount);
-    if (angle1 > 170 && angle2 > 170) {
-        stratup = true;
-    }
-    if (stratup == true && setup_finish_flag == true) {
-        if ((angle1 <= 90 && flag == false) && (angle2 <= 90 && flag == false)) {
+    if (setup_finish_flag == true) {
+        if ((angle1 <= 90 && angle1 >= 80 && flag == false) && (angle2 <= 90 && angle2 >= 80 && flag == false)) {
             flag = true;
-            minflag = false;
-            NGflag = false;
         } else if ((angle1 >= 170 && flag == true) || (angle2 >= 170 && flag == true)) {
             count += 1; //体制を戻した時にカウント
             flag = false;

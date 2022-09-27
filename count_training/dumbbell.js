@@ -361,17 +361,9 @@ function counter(angle1, angle2) {
     if (stratup == true && setup_finish_flag == true) {
         if ((angle1 <= 90 && flag == false) && (angle2 <= 90 && flag == false)) {
             flag = true;
-            minflag = false;
-            NGflag = false;
         } else if ((angle1 >= 170 && flag == true) || (angle2 >= 170 && flag == true)) {
             count += 1; //体制を戻した時にカウント
-            flag = false;
         }
-        // } else if ((angle1 < 120 && angle1 > 90 && flag == false && minflag == false) || (angle2 < 120 && angle2 > 90 && flag == false && minflag == false)) {
-        //     minflag = true;
-        // } else if ((angle1 > 170 && flag == false && minflag == true) || (angle2 > 170 && flag == false && minflag == true)) {
-        //     NGflag = true //膝関節角度が90°未満に達していない状態で上体を起こすと警告を表示
-        // }
     }
 
 
