@@ -359,9 +359,9 @@ function counter(angle1, angle2) {
     usercount = document.form.count.value; //htmlから目標回数を取得
     // console.log(usercount);
     if (setup_finish_flag == true) {
-        if ((angle1 <= 100 && angle1 >= 80 && flag == false) && (angle2 <= 100 && angle2 >= 80 && flag == false)) {
+        if ((angle1 <= 130 && angle1 >= 80 && flag == false) || (angle2 <= 130 && angle2 >= 80 && flag == false)) {
             flag = true;
-        } else if ((angle1 >= 160 && flag == true) || (angle2 >= 150 && flag == true)) {
+        } else if ((angle1 >= 150 && flag == true) || (angle2 >= 150 && flag == true)) {
             count += 1; //体制を戻した時にカウント
             flag = false;
         }
