@@ -9,6 +9,9 @@ let minflag = false;
 let NGflag = false;
 let nextpage = false;
 let stratup = false;
+let setupbody = false;
+let errorsetupbody = false;
+let Noloading = false;
 let flexiontext1;
 let flexiontext2;
 
@@ -16,7 +19,7 @@ let rcheck = 0;
 let lcheck = 0;
 
 let timer = 0;
-let Notes = "体全体を映してください";
+let Notes = "上半身を映してください";
 let statusmode = "読み込み中";
 
 let setup_finish_flag = false;
@@ -62,7 +65,7 @@ function setup() {
     video.size(width - 10, height -10);
     // console.log(width,height);
 
-    rect(width / 2, height / 2, 370, 700);
+    // rect(width / 2, height / 2, 370, 700);
 
     rectMode(CENTER);
 
@@ -195,17 +198,23 @@ function starsetup() { //推定開始までのカウントダウン
 
     for (let i = 0; i < poses.length; i += 1) {
         const pose = poses[i].pose;
-        for (let j = 0; j < pose.keypoints.length; j += 1) {
+        for (let j = 0; j < 4; j += 1) {
             if (pose.score > 0.8) {
-                if (frameCount % 60 == 0 && timer < 100) {
-                    timer += 1;
+                if (timer < 100) {
+                    setupbody = true;
+                    errorsetupbody = false;
                 } else if (timer > 100) {
+                    setupbody = false;
                     break;
                 }
             }
             if (pose.score < 0.8) {
-                if (frameCount % 60 == 0 && timer > 0) {
-                    timer--;
+                if (timer > 0) {
+                    errorsetupbody = true;
+                    setupbody = false;
+                } else {
+                    errorsetupbody = false;
+                    break;
                 }
             }
         }
@@ -215,9 +224,20 @@ function starsetup() { //推定開始までのカウントダウン
         Notes = " ";
         timer = " ";
         statusmode = " ";
+        Noloading = true;
         setup_finish_flag = true;
     }
 }
+
+setInterval(function () {
+    if (setupbody == true && timer < 100 && Noloading == false) {
+        timer += 25;
+    }
+    if (errorsetupbody == true && timer > 0 && Noloading == false) {
+        timer -= 25;
+    }
+}, 1000);
+
 
 
 function Elbowangledraw(flexiontext1, flexiontext2) {
