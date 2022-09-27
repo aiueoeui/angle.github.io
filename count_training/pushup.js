@@ -62,6 +62,8 @@ function setup() {
     video.size(width, height);
     // console.log(width,height);
 
+    rectMode(CENTER);
+
     // Create a new poseNet method with a single detection
     poseNet = ml5.poseNet(video, "single", modelReady);
     
@@ -337,7 +339,7 @@ function counter(angle1, angle2) {
     if (setup_finish_flag == true) {
         if ((angle1 <= 90 && angle1 >= 80 && flag == false) && (angle2 <= 90 && angle2 >= 80 && flag == false)) {
             flag = true;
-        } else if ((angle1 >= 170 && flag == true) || (angle2 >= 170 && flag == true)) {
+        } else if ((angle1 >= 150 && flag == true) || (angle2 >= 150 && flag == true)) {
             count += 1; //体制を戻した時にカウント
             flag = false;
         }
