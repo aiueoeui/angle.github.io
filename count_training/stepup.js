@@ -97,6 +97,7 @@ function draw() {
         textAlign(LEFT);
         text("count " + count, 1, 20);
     } else { //ifカウント以上で色変更
+        setup_finish_flag = false;//目標回数を達成した場合にカウントを停止
         //カウント
         fill(255, 0, 0);
         stroke(30);
@@ -112,18 +113,14 @@ function draw() {
         text("たっせい！", 320, 100);
     }
 
-    setTimeout(() =>{ //準備完了までカウント無効(とりあえず10秒設定)
-        console.log("setup");
-        counter();
+    //     if (rcheck > 2 || lcheck > 2) {
+    //         fill(255, 0, 0);
+    //         stroke(30);
+    //         textSize(50);
+    //         textAlign(CENTER, CENTER);
+    //         text("", 320, 240);
+    // }
 
-        if (rcheck > 2 || lcheck > 2) {
-            fill(255, 0, 0);
-            stroke(30);
-            textSize(50);
-            textAlign(CENTER, CENTER);
-            text("ひざ が まがりすぎ かも", 320, 240);
-    }
-    }, 10000);
 }
 
 // A function to draw ellipses over the detected keypoints
@@ -439,6 +436,8 @@ function counter(angle1, angle2, angle3, angle4) {
     // console.log("右腰"+angle3);
     // console.log("左腰" + angle4);
 
+    if (setup_finish_flag == true) {
+
     if (angle1 < 95 && angle3 > 110 && rflag == false) { 
         //右側のフラグここから
         rflag = true;
@@ -462,7 +461,7 @@ function counter(angle1, angle2, angle3, angle4) {
             lcheck = 0;
         }
     }
-
+}
     // if ((angle1 < 95 && angle3 > 110 && rflag == false) || (angle2 < 95 && angle4 > 105 && rflag == false)){
     //     rflag = true;
     // } else if ((angle1 > 165 && angle3 > 165 && rflag == true) || (angle2 > 165 && angle4 > 165 && lflag == true)){

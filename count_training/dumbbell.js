@@ -9,6 +9,7 @@ let minflag = false;
 let NGflag = false;
 let nextpage = false;
 let stratup = false;
+let NGmsg = false;
 let flexiontext1;
 let flexiontext2;
 
@@ -92,7 +93,7 @@ function draw() {
         textAlign(LEFT);
         text(count + "回目", 1, 20);
     } else {
-        setup_finish_flag = false;
+        setup_finish_flag = false;//目標回数を達成した場合にカウントを停止
 
         //カウント
         fill(255, 0, 0);
@@ -351,29 +352,42 @@ function Kneeangledraw(flexiontext1, flexiontext2) {
 }
 
 function counter(angle1, angle2) {
-    console.log(setup_finish_flag);
+    // console.log(setup_finish_flag);
 
     usercount = document.form.count.value; //htmlから目標回数を取得
     // console.log(usercount);
-    if (angle1 > 170 && angle2 > 170) {
+
+    if (angle1 > 160 && angle2 > 160) {
         stratup = true;
     }
+
     if (stratup == true && setup_finish_flag == true) {
-        if ((angle1 <= 90 && flag == false) && (angle2 <= 90 && flag == false)) {
+        if ((angle1 >= 160 && angle1 <= 170 && flag == false) || (angle2 >= 160 && angle2 <= 170 && flag == false)) {
             flag = true;
-        } else if ((angle1 >= 170 && flag == true) || (angle2 >= 170 && flag == true)) {
-            count += 1; //体制を戻した時にカウント
+            NGflag = false;
+            NGmsg = false;
+        } else if ((angle1 >= 85 && angle1 <= 95 && flag == true && NGflag == false) || (angle2 >= 85 && angle2 <= 95 && flag == true && NGflag == false)) {
+            count += 1; //腕を戻したときにカウント
+            flag = false;
+            NGflag = false;
         }
     }
+        // } else if ((angle1 < 130 && angle1 > 80 && flag == false && NGflag == false) || (angle2 < 130 && angle2 > 80 && flag == false && NGflag == false)){
+        //     NGflag = true;
+        // } else if ((angle1 > 85 && flag == false && NGflag == true) || (angle1 > 85 && flag == false && NGflag == true)){
+        //     NGmsg = true; //フォーム指導テキスト表示
+        //     NGflag = false;
+        // }
+    // }
 
-
-    if (NGflag == true) {
+    if (NGmsg == true) {
         fill(255, 0, 0);
         stroke(30);
         textSize(50);
         textAlign(CENTER, CENTER);
-        text("ひざ が あさいよ", 320, 240);
+        text("うでをもっとのばそう", width / 2, height / 2);
     }
+
     setTimeout(() => { //目標達成後の画面遷移フラグ(5秒後)
         // console.log("Execution 5sec");
         // console.log(nextpage);

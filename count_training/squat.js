@@ -99,7 +99,7 @@ function draw() {
         textStyle(BOLD);
         text(count + "回目", 1, 20);
     } else {
-        setup_finish_flag = false;
+        setup_finish_flag = false;//目標回数を達成した場合にカウントを停止
 
         //カウント
         fill(255, 0, 0);
@@ -156,11 +156,21 @@ function drawSkeleton() {
 
 function starsetup() { //推定開始までのカウントダウン
 
-    fill(255, 0, 0);
-    stroke(30);
-    textSize(50);
-    textAlign(CENTER, CENTER);
-    text(Notes, width / 2, height / 2 );
+    if (window.matchMedia('(max-width: 767px)').matches) {
+        //スマホ
+        fill(255, 0, 0);
+        stroke(30);
+        textSize(30);
+        textAlign(CENTER, CENTER);
+        text(Notes, width / 2, height / 2);
+    } else if (window.matchMedia('(min-width:768px)').matches) {
+        //PC
+        fill(255, 0, 0);
+        stroke(30);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+        text(Notes, width / 2, height / 2);
+    }
 
     fill(255, 255, 255);
     stroke(30);
