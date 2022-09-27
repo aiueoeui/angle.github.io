@@ -250,7 +250,7 @@ function Elbowangledraw(flexiontext1, flexiontext2) {
             // A keypoint is an object describing a body part (like rightArm or leftShoulder)
             const keypoint = pose.keypoints[j];
             // Only draw an ellipse is the pose probability is bigger than 0.2
-            if (pose.keypoints[RIGHTELBOW].score > 0.6 && pose.keypoints[RIGHTWRIST].score > 0.6 && pose.keypoints[RIGHTSHOULDER].score > 0.6) {
+            if (pose.keypoints[RIGHTELBOW].score > 0.5 && pose.keypoints[RIGHTWRIST].score > 0.5 && pose.keypoints[RIGHTSHOULDER].score > 0.5) {
                 //右
 
                 const P1 = {
@@ -299,7 +299,7 @@ function Elbowangledraw(flexiontext1, flexiontext2) {
                 textFont('sans-serif');
                 text(flexiontext1 + "°", pose.keypoints[RIGHTELBOW].position.x, pose.keypoints[RIGHTELBOW].position.y);
             }
-            if (pose.keypoints[LEFTELBOW].score > 0.6 && pose.keypoints[LEFTWRIST].score > 0.6 && pose.keypoints[LEFTSHOULDER].score > 0.6) {
+            if (pose.keypoints[LEFTELBOW].score > 0.5 && pose.keypoints[LEFTWRIST].score > 0.5 && pose.keypoints[LEFTSHOULDER].score > 0.5) {
                 //左
 
                 const O1 = {
@@ -359,9 +359,9 @@ function counter(angle1, angle2) {
     usercount = document.form.count.value; //htmlから目標回数を取得
     // console.log(usercount);
     if (setup_finish_flag == true) {
-        if ((angle1 <= 90 && angle1 >= 80 && flag == false) && (angle2 <= 90 && angle2 >= 80 && flag == false)) {
+        if ((angle1 <= 120 && angle1 >= 80 && flag == false) && (angle2 <= 120 && angle2 >= 80 && flag == false)) {
             flag = true;
-        } else if ((angle1 >= 150 && flag == true) || (angle2 >= 150 && flag == true)) {
+        } else if ((angle1 >= 160 && flag == true) || (angle2 >= 150 && flag == true)) {
             count += 1; //体制を戻した時にカウント
             flag = false;
         }
