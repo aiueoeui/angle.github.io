@@ -16,6 +16,8 @@ let downPosition = false;
 let highlightBack = false;
 let backWarningGiven = false;
 
+let timeout = false;
+
 
 async function init() {
     detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER };
@@ -34,23 +36,31 @@ async function init() {
         '12,14': 'c',
         '14,16': 'c'
     };
-    await getPoses();
+    
 }
 
 async function videoReady() {
     //console.log('video ready');
+    await getPoses();
 }
 
+setTimeout(
+    function () 
+        { timeout = true }
+        , 1000);
+
 async function setup() {
+    
     var msg = new SpeechSynthesisUtterance('Loading, please wait...');
     window.speechSynthesis.speak(msg);
-    createCanvas(640, 480);
+    createCanvas(740, 480);
     video = createCapture(VIDEO, videoReady);
     video.size(width, height);
     //video.size(960, 720);
     video.hide()
 
     await init();
+    
 }
 
 async function getPoses() {

@@ -28,14 +28,18 @@ let rightflexiontext_01 = 0;
 let target_angle_r2 = "右肘 ";
 let rightflexiontext_02 = 0;
 
-let timerflag = false;
-let conditions_count = 10;
+let Lefttimerflag = false;
+let Righttimerflag = false;
+
+let Rightconditions_count = 10;
+let Leftconditions_count = 10;
 
 let conditions_angle_1 = 95;
 let conditions_angle_2 = 170;
 let conditions_angle_3 = 150;
 
-let HipAbovenose = false;
+let LeftWristAbovenose = false;
+let RightWristAbovenose = false;
 let flag_1 = false;
 let flag_2 = false;
 
@@ -157,14 +161,14 @@ function draw() {
     //flag系テキスト
     textSize(30);
 
-    if (HipAbovenose == true) {
+    if (RightWristAbovenose == true) {
         fill(0, 255, 0);
         textAlign(RIGHT, TOP);
-        text("体制チェック" + HipAbovenose, width, 1);
+        text("体制チェック" + RightWristAbovenose, width, 1);
     } else {
         fill(200, 0, 0);
         textAlign(RIGHT, TOP);
-        text("体制チェック" + HipAbovenose, width, 1);
+        text("体制チェック" + RightWristAbovenose, width, 1);
     }
 
     if (flag_1 == true) {
@@ -204,8 +208,23 @@ function DebugText() {
             txtscore = score.toFixed(2);//scoreを小数点2まで切り捨て
         }
     }
+    fill(255);
     text("score " + txtscore, 1, (height - 1));
-    text("count " + conditions_count, 220, (height - 1));
+    if (Leftconditions_count == 0) {
+        fill(0, 200, 0);
+        text("Lcount " + Leftconditions_count, 220, (height - 1));
+    } else {
+        fill(255);
+        text("Lcount " + Leftconditions_count, 220, (height - 1));
+    }
+
+    if (Rightconditions_count == 0) {
+        fill(0, 200, 0);
+        text("Rcount " + Rightconditions_count, 440, (height - 1));
+    } else {
+        fill(255);
+        text("Rcount " + Rightconditions_count, 440, (height - 1));
+    }
 }
 
 function anglereslt_1() {
@@ -390,8 +409,8 @@ function right_angle_1() {
     //鼻:0 左目:1 右目:2 左耳:3 右耳:4 左肩:5 右肩:6 左ひじ:7 右ひじ:8 左手首:9 右手首:10 左腰:11 右腰:12 左ひざ:13 右ひざ:14 左足首:15 右足首:16
 
     var rightShoulder = poses[0].keypoints[6];
-    var rightElbow = poses[0].keypoints[7];
-    var rightHip = poses[0].keypoints[11];
+    var rightElbow = poses[0].keypoints[8];
+    var rightHip = poses[0].keypoints[12];
 
     const O1 = rightShoulder; //中央
     const O2 = rightHip; //最下部
@@ -456,41 +475,77 @@ function right_angle_2() {
 
 function conditions() {
 
-    if (poses[0].keypoints[7].score >= confidence_threshold || poses[0].keypoints[8].score >= confidence_threshold) {//肘のスコアが一定以上の場合
-        if ((poses[0].keypoints[7].y < poses[0].keypoints[0].y) || (poses[0].keypoints[8].y < poses[0].keypoints[0].y)) {//鼻の位置が肘より低い場合
-            HipAbovenose = true;
-        } else {
-            HipAbovenose = false;
-        }
-    }
+        if (poses[0].keypoints[7].score >= confidence_threshold || poses[0].keypoints[8].score >= confidence_threshold) {//肘のスコアが一定以上の場合
 
-    if (HipAbovenose == true) {//肩角度チェック
-        if ((rightflexiontext_01 > 120 && rightflexiontext_01 < 140) && (leftflexiontext_01 > 140 && leftflexiontext_01 < 160)) {
-            flag_1 = true;
-        } else {
-            flag_1 = false;
-        }
+            if ((poses[0].keypoints[9].y < poses[0].keypoints[0].y)) {//鼻の位置が左手首より低い場合
+                LeftWristAbovenose = true;
+            } else {
+                LeftWristAbovenose = false;
+            }
 
-        if (flag_1 == true) {//肘角度チェック
-            if ((leftflexiontext_02 >= 160 && rightflexiontext_02 >= 150)) {
+            if ((poses[0].keypoints[10].y < poses[0].keypoints[0].y)) {//鼻の位置が右手首より低い場合
+                RightWristAbovenose = true;
+            } else {
+                RightWristAbovenose = false;
+            }
+
+        if (LeftWristAbovenose == true) {//左傾け肩角度チェック
+            if ((rightflexiontext_01 > 0 && rightflexiontext_01 < 25) && (leftflexiontext_01 > 80 && leftflexiontext_01 < 100)) {
+                flag_1 = true;
+            } else {
+                flag_1 = false;
+            }
+
+            //右傾け肘角度チェック
+            if ((leftflexiontext_02 >= 40 && leftflexiontext_02 <= 55)) {
                 flag_2 = true;
             } else {
                 flag_2 = false;
             }
+
+
+            if (flag_1 == true && flag_2 == true) {
+                Lefttimerflag = true;
+            } else {
+                Lefttimerflag = false;
+            }
         }
 
-        if (flag_1 == true && flag_2 == true){
-            timerflag = true;
-        } else {
-            timerflag = false;
+        if (RightWristAbovenose == true) {//右傾け肩角度チェック
+            if ((rightflexiontext_01 > 80 && rightflexiontext_01 < 100) && (leftflexiontext_01 > 0 && leftflexiontext_01 < 25)) {
+                flag_1 = true;
+            } else {
+                flag_1 = false;
+            }
+
+                //右傾け肘角度チェック
+                if ((rightflexiontext_02 >= 40 && rightflexiontext_02 <= 55)) {
+                    flag_2 = true;
+                } else {
+                    flag_2 = false;
+                }
+            
+
+            if (flag_1 == true && flag_2 == true) {
+                Righttimerflag = true;
+            } else {
+                Righttimerflag = false;
+            }
         }
     }
 }
 //近似値の場合にカウント増加
 setInterval(function () {
-    if (timerflag == true) {
-        if (conditions_count > 0) {
-            conditions_count -= 1;
+
+    if (Lefttimerflag == true) {
+        if (Leftconditions_count > 0) {
+            Leftconditions_count -= 1;
+        }
+    }
+
+    if (Righttimerflag == true) {
+        if (Rightconditions_count > 0) {
+            Rightconditions_count -= 1;
         }
     }
 }, 1000);
