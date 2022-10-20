@@ -220,7 +220,7 @@ function DebugText() {
     }
     fill(255);
     text("score " + txtscore, 1, (height - 1));
-    if (Leftconditions_count == 0){
+    if (Leftconditions_count == 0) {
         fill(0, 200, 0);
         text("Lcount " + Leftconditions_count, 220, (height - 1));
     } else {
@@ -228,7 +228,7 @@ function DebugText() {
         text("Lcount " + Leftconditions_count, 220, (height - 1));
     }
 
-    if(Rightconditions_count == 0){
+    if (Rightconditions_count == 0) {
         fill(0, 200, 0);
         text("Rcount " + Rightconditions_count, 440, (height - 1));
     } else {
@@ -281,12 +281,12 @@ function drawKeypoints() {
                     16);
 
                 //顔隠し
-                if(PHONE == true){
+                if (PHONE == true) {
                     fill(255, 255, 255);
                     ellipse(map(poses[0].keypoints[0].x, 0, 640, 0, width),
                         map(poses[0].keypoints[0].y, 0, 480, 0, height),
                         50);
-                }else{  
+                } else {
                     fill(255, 255, 255);
                     ellipse(map(poses[0].keypoints[0].x, 0, 640, 0, width),
                         map(poses[0].keypoints[0].y, 0, 480, 0, height),

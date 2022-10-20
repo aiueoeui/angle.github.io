@@ -464,6 +464,8 @@ function conditions() {
         }
     }
 
+    
+
     if (HipAbovenose == true) {//肩角度チェック
         if ((rightflexiontext_01 > 120 && rightflexiontext_01 < 140) && (leftflexiontext_01 > 140 && leftflexiontext_01 < 160)) {
             flag_1 = true;
@@ -472,7 +474,7 @@ function conditions() {
         }
 
         if (flag_1 == true) {//肘角度チェック
-            if ((leftflexiontext_02 >= 160 && rightflexiontext_02 >= 150)) {
+            if ((leftflexiontext_02 >= 150 && rightflexiontext_02 >= 130)) {
                 flag_2 = true;
             } else {
                 flag_2 = false;
