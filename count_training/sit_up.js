@@ -16,15 +16,6 @@ let horizontal_screen = false;
 
 const confidence_threshold = 0.6; //指定数値以上の精度の場合
 
-let timer = 0;
-let Notes = "体を映してください";
-let statusmode = "読み込み中";
-let stratup = false;
-let setupbody = false;
-let errorsetupbody = false;
-let Noloading = false;
-let setup_finish_flag = false;
-
 let target_angle_l1 = "左膝 "; //部位名
 let leftflexiontext_01 = 0;
 
@@ -162,15 +153,6 @@ function draw() {
 
     DebugText();
 
-    //体読み込みテキスト
-    fill(255, 0, 0);
-    stroke(30);
-    textAlign(CENTER, CENTER);
-    textSize(50);
-    text(Notes, width / 2, height / 2);
-
-    startsetup();
-
     //flag系テキスト
     textSize(30);
 
@@ -248,55 +230,6 @@ function anglereslt_2(){
     } else {
         text(target_angle_l2 + leftflexiontext_02 + "°", 1, 30);
         text(target_angle_r2 + rightflexiontext_02 + "°", 1, 90);
-    }
-}
-
-setInterval(function () {
-    if (setupbody == true && timer < 100 && Noloading == false) {
-        timer += 25;
-    }
-    if (errorsetupbody == true && timer > 0 && Noloading == false) {
-        timer -= 25;
-    }
-}, 1000);
-
-function startsetup(){
-    //読み込みテキスト
-    fill(255, 255, 255);
-    stroke(30);
-    textSize(30);
-    textAlign(CENTER, CENTER);
-    text(statusmode + timer, width/2, (height/2)+40);
-
-    if (poses && poses.length > 0) {
-        for (let kp of poses[0].keypoints) {
-            const { score } = kp;
-            if (score > confidence_threshold) {
-                if (timer < 100) {
-                    setupbody = true;
-                    errorsetupbody = false;
-                } else if (timer > 100) {
-                    setupbody = false;
-                }
-            }
-            if (score < confidence_threshold) {
-                if (timer > 0) {
-                    errorsetupbody = true;
-                    setupbody = false;
-                } else {
-                    errorsetupbody = false;
-                }
-            }
-
-        }
-    }
-
-    if (timer >= 100) {
-        Notes = " ";
-        timer = " ";
-        statusmode = " ";
-        Noloading = true;
-        setup_finish_flag = true;
     }
 }
 
@@ -513,7 +446,6 @@ function right_angle_2() {
 }
 
 function conditions() {
-    if(setup_finish_flag == true){
 
         if (poses[0].keypoints[13].score >= confidence_threshold || poses[0].keypoints[14].score >= confidence_threshold){//腰のスコアが一定以上の場合
             if ((poses[0].keypoints[13].y < poses[0].keypoints[11].y) && (poses[0].keypoints[14].y < poses[0].keypoints[12].y)) {//腰の位置が膝より低い場合
@@ -542,4 +474,3 @@ function conditions() {
             }
         }
     }
-}
